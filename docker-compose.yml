@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: FerMar
+      MYSQL_DATABASE: db_cart_app
+      MYSQL_USER: Camilo
+      MYSQL_PASSWORD: FerMar
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  cart-app:
+    build: .
+    container_name: cart-app
+    ports:
+      - "9003:9003"
+      - "4200:4200"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/db_cart_app
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: FerMar
+
+volumes:
+  mysql-data:
+
